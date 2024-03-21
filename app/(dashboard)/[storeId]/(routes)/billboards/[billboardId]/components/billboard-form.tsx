@@ -1,6 +1,6 @@
 "use client";
 
-import { BillBoard } from "@prisma/client";
+import { Billboard } from "@prisma/client";
 import Heading from "@/components/ui/heading";
 import { Button } from "@/components/ui/button";
 import { Trash } from "lucide-react";
@@ -18,8 +18,9 @@ import { useParams, useRouter } from "next/navigation";
 import { ApiAlert } from "@/components/ui/api-alert";
 import { useOrigin } from "@/hooks/use-origin";
 import ImageUpload from "@/components/ui/image-upload";
+
 interface BillboardFormProps {
-    initialData: BillBoard;
+    initialData: Billboard | null;
 }
 
 const formSchema=z.object({
@@ -33,9 +34,11 @@ export const BillboardForm: React.FC<BillboardFormProps> = ({
 }) => {
     const [open,setOpen]=useState(false);
     const [loading,setLoading]=useState(false);
+
     const params=useParams();
     const router=useRouter();
     const origin=useOrigin();
+
     const title=initialData?"Edit Billboard":"Create billboard";
     const description=initialData?"Edit a Billboard":"Add a new billboard";
     const toastMessage  =initialData?"Billboard Updated.":"BillBoard Created.";
@@ -50,12 +53,16 @@ const form =useForm<BillboardFormValues>({
 });
 
 const onSubmit=async(data:BillboardFormValues)=>{
-    console.log(data);
     try {
         setLoading(true);
-        await axios.patch(`/api/stores/${params.storeId}`,data);
+        if(initialData){
+            await axios.patch(`/api/${params.storeId}/billboards/${params.billboardId}`,data);
+        }else{        
+            await axios.post(`/api/${params.storeId}/billboards`,data);
+    }
         router.refresh();
-        toast.success("Store Updated")
+        router.push(`/${params.storeId}/billboards`)
+        toast.success(toastMessage)
     } catch (error) {
         toast.error("Something went wrong");
     }
@@ -67,12 +74,12 @@ const onSubmit=async(data:BillboardFormValues)=>{
     const onDelete=async()=>{
         try {
             setLoading(true);
-            await axios.delete(`/api/stores/${params.storeId}`);
+            await axios.delete(`/api/${params.storeId}/billboards/${params.billboardId}`);
             router.push("/");
             router.refresh();
-            toast.success("Store deleted");
+            toast.success("Billboard deleted");
         } catch (error) {
-                toast.error("Make sure u removed all products and categories first")
+                toast.error("Make sure u removed all categories using this billboard first")
         }finally{
             setLoading(false);
             setOpen(false);
@@ -93,7 +100,7 @@ const onSubmit=async(data:BillboardFormValues)=>{
                 <Heading
                     title={title}
                     description={description} />
-                    {initialData && <Button variant="destructive" size="icon" onClick={() => {setOpen(true) }}>
+                    {initialData && <Button variant="destructive" size="sm" onClick={() => {setOpen(true) }}>
                     <Trash className="h-4 w-4"></Trash>
                 </Button>}
                 
@@ -102,13 +109,13 @@ const onSubmit=async(data:BillboardFormValues)=>{
             <Form {...form}>
                 <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8 w-full">
                 <FormField control={form.control}
-                        name="ImageUrl"
+                        name="imageUrl"
                         render={({field})=>(
                             <FormItem>
                                 <FormLabel>Background Image</FormLabel>
                                 <FormControl>
                                     <ImageUpload
-                                    value={field.value? [field.value]:[]}
+                                    value={field.value ? [field.value]:[]}
                                     disabled={loading}
                                     onChange={(url)=>field.onChange(url)}
                                     onRemove={()=> field.onChange("")}
@@ -136,7 +143,7 @@ const onSubmit=async(data:BillboardFormValues)=>{
                     <Button disabled={loading} className="ml-auto" type="submit">{action}</Button>
                 </form>
             </Form>
-            <Separator></Separator>
+            <Separator/>
            
         </>
 

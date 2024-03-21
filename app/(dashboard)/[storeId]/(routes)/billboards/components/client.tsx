@@ -16,7 +16,9 @@ export const BillBoardClient=()=>{
         title="Billboards(0)"
             description="Manage BillBoards for your Store"
         />
-        <Button onClick={()=>{router.push(`/${params.storeId}/billboards/new`)}}><Plus className="mr-2 h-4 w-4"/>Add new</Button>
+        <Button onClick={()=>{router.push(`/${params.storeId}/billboards/new`)}}>
+            <Plus className="mr-2 h-4 w-4"/>Add new
+        </Button>
 
     </div>
     <Separator/>
