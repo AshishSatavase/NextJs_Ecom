@@ -15,8 +15,6 @@ import { AlertModal } from "@/components/modals/alert-modal";
 import toast from "react-hot-toast";
 import axios from "axios";
 import { useParams, useRouter } from "next/navigation";
-import { ApiAlert } from "@/components/ui/api-alert";
-import { useOrigin } from "@/hooks/use-origin";
 import ImageUpload from "@/components/ui/image-upload";
 
 interface BillboardFormProps {
@@ -37,7 +35,6 @@ export const BillboardForm: React.FC<BillboardFormProps> = ({
 
     const params=useParams();
     const router=useRouter();
-    const origin=useOrigin();
 
     const title=initialData?"Edit Billboard":"Create billboard";
     const description=initialData?"Edit a Billboard":"Add a new billboard";
@@ -60,8 +57,8 @@ const onSubmit=async(data:BillboardFormValues)=>{
         }else{        
             await axios.post(`/api/${params.storeId}/billboards`,data);
     }
-        router.refresh();
         router.push(`/${params.storeId}/billboards`)
+        router.refresh();
         toast.success(toastMessage)
     } catch (error) {
         toast.error("Something went wrong");
@@ -75,7 +72,7 @@ const onSubmit=async(data:BillboardFormValues)=>{
         try {
             setLoading(true);
             await axios.delete(`/api/${params.storeId}/billboards/${params.billboardId}`);
-            router.push("/");
+            router.push(`/${params.storeId}/billboards`);
             router.refresh();
             toast.success("Billboard deleted");
         } catch (error) {
@@ -142,9 +139,7 @@ const onSubmit=async(data:BillboardFormValues)=>{
                     </div>
                     <Button disabled={loading} className="ml-auto" type="submit">{action}</Button>
                 </form>
-            </Form>
-            <Separator/>
-           
+            </Form>           
         </>
 
 
