@@ -1,6 +1,5 @@
 "use client";
 
-import {  Size } from "@prisma/client";
 import Heading from "@/components/ui/heading";
 import { Button } from "@/components/ui/button";
 import { Trash } from "lucide-react";
@@ -15,19 +14,19 @@ import { AlertModal } from "@/components/modals/alert-modal";
 import toast from "react-hot-toast";
 import axios from "axios";
 import { useParams, useRouter } from "next/navigation";
-import ImageUpload from "@/components/ui/image-upload";
+import { Color } from "@prisma/client";
 
-interface SizeFormProps {
-    initialData: Size | null;
+interface ColorFormProps {
+    initialData: Color | null;
 }
 
 const formSchema=z.object({
     name:z.string().min(1),
-    value:z.string().min(1)
+    value:z.string().min(4).regex(/^#/,{message:'String must be a valid hexcode'})
 })
 
 type BillboardFormValues=z.infer<typeof formSchema>
-export const SizeForm: React.FC<SizeFormProps> = ({
+export const ColorForm: React.FC<ColorFormProps> = ({
     initialData
 }) => {
     const [open,setOpen]=useState(false);
@@ -36,9 +35,9 @@ export const SizeForm: React.FC<SizeFormProps> = ({
     const params=useParams();
     const router=useRouter();
 
-    const title=initialData?"Edit Size":"Create Size";
-    const description=initialData?"Edit a Size":"Add a new Size";
-    const toastMessage  =initialData?"Size Updated.":"Size Created.";
+    const title=initialData?"Edit Color":"Create Color";
+    const description=initialData?"Edit a Color":"Add a new Color";
+    const toastMessage  =initialData?"Color Updated.":"Color Created.";
     const action=initialData?"Save Changes":"Create";
 
 const form =useForm<BillboardFormValues>({
@@ -53,11 +52,11 @@ const onSubmit=async(data:BillboardFormValues)=>{
     try {
         setLoading(true);
         if(initialData){
-            await axios.patch(`/api/${params.storeId}/sizes/${params.sizeId}`,data);
+            await axios.patch(`/api/${params.storeId}/colors/${params.colorId}`,data);
         }else{        
-            await axios.post(`/api/${params.storeId}/sizes`,data);
+            await axios.post(`/api/${params.storeId}/colors`,data);
     }
-        router.push(`/${params.storeId}/sizes`)
+        router.push(`/${params.storeId}/colors`)
         router.refresh();
         toast.success(toastMessage)
     } catch (error) {
@@ -71,12 +70,12 @@ const onSubmit=async(data:BillboardFormValues)=>{
     const onDelete=async()=>{
         try {
             setLoading(true);
-            await axios.delete(`/api/${params.storeId}/sizes/${params.sizeId}`);
-            router.push(`/${params.storeId}/sizes`);
+            await axios.delete(`/api/${params.storeId}/colors/${params.sizeId}`);
+            router.push(`/${params.storeId}/colors`);
             router.refresh();
-            toast.success("Size deleted");
+            toast.success("Color deleted");
         } catch (error) {
-                toast.error("Make sure u removed all products using this size first")
+                toast.error("Make sure u removed all products using this color first")
         }finally{
             setLoading(false);
             setOpen(false);
@@ -113,7 +112,7 @@ const onSubmit=async(data:BillboardFormValues)=>{
                                 <FormLabel>Name</FormLabel>
                                 <FormControl>
                                     <Input disabled={loading}
-                                    placeholder="Size name"
+                                    placeholder="Color name"
                                     {...field}/>
                                 </FormControl>
                                 <FormMessage></FormMessage>
@@ -125,9 +124,15 @@ const onSubmit=async(data:BillboardFormValues)=>{
                             <FormItem>
                                 <FormLabel>Value</FormLabel>
                                 <FormControl>
+                                    <div className="flex items-center gap-x-4">
                                     <Input disabled={loading}
-                                    placeholder="Size Value"
+                                    placeholder="Color Value"
                                     {...field}/>
+                                    <div 
+                                    className="border p-4 rounded-full" 
+                                    style={{backgroundColor:field.value}}/>
+                                    
+                                    </div>
                                 </FormControl>
                                 <FormMessage></FormMessage>
                             </FormItem>
