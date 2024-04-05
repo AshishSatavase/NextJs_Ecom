@@ -1,9 +1,5 @@
 "use client";
-import { Button } from '@/components/ui/button'
-import { UserButton } from '@clerk/nextjs';
-import { Modal } from '@/components/ui/modal';
 import { useStoreModal } from '@/hooks/use-store-modal';
-import { stat } from 'fs';
 import { useEffect } from 'react';
 const SetupPage=()=> {
   // const storeModal = useStoreModal();//this works fine but dosent work fine when u have to useeffect
