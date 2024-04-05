@@ -2,6 +2,10 @@ import prismadb from "@/lib/prismadb";
 import { auth,  } from "@clerk/nextjs";
 import { redirect } from "next/navigation";
 import Navbar from "@/components/navbar";
+
+import Component1 from "@/components/Component1";
+
+
 export default function DashBoardLayout({
     children,
     params  //parameters of function
@@ -22,11 +26,12 @@ export default function DashBoardLayout({
     if(!store){
         redirect('/');
     }
+
+ 
     return(
         <>
         <Navbar/>
         {children}
-        
         </>
     )
 }

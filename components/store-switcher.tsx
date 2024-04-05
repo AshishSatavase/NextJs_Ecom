@@ -51,7 +51,10 @@ export default function StoreSwitcher({className,  items = [] }: StoreSwitcherPr
   };
 
   return (
-    <Popover open={open} onOpenChange={setOpen}>
+    <div id="store">
+
+
+    <Popover open={open} onOpenChange={setOpen} >
       <PopoverTrigger asChild>
         <Button
           variant="outline"
@@ -115,5 +118,7 @@ export default function StoreSwitcher({className,  items = [] }: StoreSwitcherPr
         </C1>
       </PopoverContent>
     </Popover>
+    </div>
+
   );
 };
