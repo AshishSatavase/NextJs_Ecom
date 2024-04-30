@@ -1,9 +1,6 @@
 # NextEcom
 
-NextEcom is a web application designed to help sellers manage their products effectively. It acts as a backend service, allowing sellers to add products, edit their details, and create new categories for available products in their store. All products added by sellers will appear in the 
-
-[Next Store](https://github.com/AshishSatavase/NextJs_Store)
-
+NextEcom is a web application designed to help sellers manage their products effectively. It acts as a backend service, allowing sellers to add products, edit their details, and create new categories for available products in their store. All products added by sellers will appear in the [Next Store](https://github.com/AshishSatavase/NextJs_Store)
 , which is another frontend part of this project.
 
 ## Dashboard
