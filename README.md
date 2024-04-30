@@ -8,8 +8,11 @@ NextEcom is a web application designed to help sellers manage their products eff
 The Dashboard provides sellers with comprehensive analytics and insights to monitor the performance of their store. Sellers can view monthly and yearly profits, sales metrics, and inventory status graphically. This data helps them make informed decisions about their business.
 
 ## Billboards
-![List of Billboards](/images/image%20copy.png) ![Add New Billboard Form](/images/image%20copy%202.png)
 
+<div style="display:flex;">
+    <img src="/images/image%20copy.png" alt="List of Billboards" style="width:50%;">
+    <img src="/images/image%20copy%202.png" alt="Add New Billboard Form" style="width:50%;">
+</div>
 In the Billboards section, sellers can manage the billboards that serve as background images in the NextStore for specific categories. They can view existing billboards and add new ones using the provided form. Billboards are a powerful tool for attracting customers' attention to specific product categories.
 
 ## Categories
