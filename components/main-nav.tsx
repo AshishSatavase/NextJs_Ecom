@@ -76,7 +76,6 @@ export function MainNav({
             </Link>
             
             )}
-            <Component1/>
         </nav>
     );
 };
